@@ -8,6 +8,7 @@ class Player(Entity):
             self.nick = name  
             self.inventory = Inventory()
             self.saciedade = 100
+            self.atriubutos = Attributes()
             
         def move(self, keys):
             delta_x = 0
@@ -43,3 +44,10 @@ class Player(Entity):
             self.Atk += 10
             self.Def += 5 
             self.XP = max(0, self.XP - (self.Lvl - 1) * 100) 
+            
+        def atack(self):
+            pass
+        
+        
+class Atributes:
+    def _
