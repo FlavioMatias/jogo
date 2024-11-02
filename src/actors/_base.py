@@ -1,13 +1,12 @@
 import pygame
 
 class Entity:
-    def __init__(self, hp: int, speed: int, defesa: int, ataque: int, sprite: str, position: tuple, size: tuple):
+    def __init__(self, max_hp : int, speed: int, sprite: str, position: tuple, size: tuple):
         """ Status inicial """
-        self.Hp = hp
-        self.Atk = ataque
-        self.Def = defesa
+        self.HP = max_hp
+        self._Max_Hp = max_hp
         self.Spd = speed
-        self.Lvl = 1
+        self._Lvl = 1
         self.XP = 0
         self.alive = True
 
@@ -29,7 +28,7 @@ class Entity:
         """ Ganha XP e sobe de nível se necessário """
         
         self.XP += amount
-        if self.XP >= self.Lvl * 100:
+        if self.XP >= self.Lvl * 120:
             self.__level_up()
             
     def die(self):
@@ -42,10 +41,8 @@ class Entity:
         """ Sobe de nível e melhora atributos """
         
         self.Lvl += 1
-        self.Hp += 10
-        self.Atk += 4
-        self.Def += 3  
-        self.XP = 0
+        self.Hp += 10  
+        self.XP = max(0, self.XP - (self.Lvl - 1) * 120)
 
     def set_sprite(self, sprite_path):
         """ Atualiza o sprite com uma nova imagem """

@@ -1,13 +1,20 @@
 from ._base import Entity, Inventory
 import pygame
-
+class raça:
+    pass
+    # raças = [anao, elfo, hobbit, humano]
 class Player(Entity):
-        def __init__(self, hp: int, speed: int, defesa: int, ataque: int, sprite: str, position: tuple, size: tuple, name: str):
+        def __init__(self, sprite : str, position: tuple, size: tuple, name: str, speed: int = 10, max_hp: int = 100):
 
-            super().__init__(hp, speed, defesa, ataque, sprite, position, size)
+            super().__init__(max_hp, speed, sprite, position, size)
             self.nick = name  
+            self._Max_MP = 100
+            self.MP = self._Max_MP
+            self._Max_STM = 100
+            self.STM = self._Max_STM
+            self.moedas = 0
+            self.equipamentos = Equipamentos()
             self.inventory = Inventory()
-            self.saciedade = 100
             self.atriubutos = Attributes()
             
         def move(self, keys):
@@ -16,12 +23,16 @@ class Player(Entity):
 
             if keys[pygame.K_a]: 
                 delta_x = -self.Spd
+                self.STM -= 0.1
             if keys[pygame.K_d]: 
                 delta_x = self.Spd
+                self.STM -= 0.1
             if keys[pygame.K_w]: 
                 delta_y = -self.Spd
+                self.STM -= 0.1
             if keys[pygame.K_s]: 
                 delta_y = self.Spd
+                self.STM -= 0.1
 
             self.rect.x += delta_x
             self.rect.y += delta_y
@@ -40,14 +51,23 @@ class Player(Entity):
             """ Sobe de nível e melhora atributos """
             
             self.Lvl += 1
-            self.Hp += 20
-            self.Atk += 10
-            self.Def += 5 
+            self.MaxHP += 20
             self.XP = max(0, self.XP - (self.Lvl - 1) * 100) 
             
         def atack(self):
             pass
         
         
-class Atributes:
-    def _
+class Attributes:
+    def __init__(self):
+        self.intelligence: int = 0
+        self.strength: int = 0
+        self.agility: int = 0
+        self.dexterity: int = 0
+        self.constitution: int = 0
+        self.wisdom: int = 0
+        self.charisma: int = 0
+
+class Equipamentos():
+    def __init__(self):
+        pass
