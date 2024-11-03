@@ -1,0 +1,9 @@
+class wolf:pass
+class dragon:pass
+class witch:pass
+class brulio:pass
+class goblins:pass
+class bandits:pass
+class ogre:pass
+class Troll:pass
+class demon:pass

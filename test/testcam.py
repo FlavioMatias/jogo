@@ -2,20 +2,20 @@ import pygame
 import sys
 
 # Configurações gerais
-LARGURA, ALTURA = 800, 600  # Dimensões da tela do jogo
+LARGURA, ALTURA = 1400, 800  # Dimensões da tela do jogo
 FPS = 60  # Frames por segundo, controlando a taxa de atualização da tela
 
 # Cores definidas em formato RGB
 COR_PLAYER = (0, 128, 255)  # Azul claro para o jogador
 COR_BLOCO_AMARELO = (255, 255, 0)  # Amarelo para o bloco
 COR_INIMIGO = (255, 0, 0)  # Vermelho para o inimigo
-
+player_sprite = pygame.image.load("assets/player.png")
+player_sprite = pygame.transform.scale(player_sprite, (70, 100))
 # Classe do jogador
 class Player:
     def __init__(self):
-        self.largura = 50  # Largura do jogador
-        self.altura = 50  # Altura do jogador
-        # Inicializa o retângulo do jogador centralizado na tela
+        self.largura = 70  # Largura do jogador
+        self.altura = 100  # Altura do jogador
         self.rect = pygame.Rect(LARGURA // 2 - self.largura // 2, ALTURA // 2 - self.altura // 2, self.largura, self.altura)
         self.velocidade = 10  # Velocidade de movimento do jogador
 
@@ -24,11 +24,11 @@ class Player:
         # Movimentos com as teclas de seta
         if teclas[pygame.K_LEFT] and self.rect.left > 5:
             self.rect.x -= self.velocidade
-        if teclas[pygame.K_RIGHT] and self.rect.right < 1440:  # Limite à direita
+        if teclas[pygame.K_RIGHT] and self.rect.right < 10000:  # Limite à direita
             self.rect.x += self.velocidade
         if teclas[pygame.K_UP] and self.rect.top > 5:
             self.rect.y -= self.velocidade
-        if teclas[pygame.K_DOWN] and self.rect.bottom < 820:  # Limite embaixo
+        if teclas[pygame.K_DOWN] and self.rect.bottom < 10000:  # Limite embaixo
             self.rect.y += self.velocidade
         
         # Atualiza a posição da câmera baseada na posição do jogador
@@ -68,7 +68,7 @@ class UI:
         # Desenha o inimigo
         pygame.draw.rect(tela, COR_INIMIGO, (inimigo.rect.x - camera.x, inimigo.rect.y - camera.y, inimigo.rect.width, inimigo.rect.height))
         # Desenha o jogador
-        pygame.draw.rect(tela, COR_PLAYER, (player.rect.x - camera.x, player.rect.y - camera.y, player.largura, player.altura))
+        tela.blit(player_sprite, (player.rect.x - camera.x, player.rect.y - camera.y))
 
 # Classe do mundo
 class World:
@@ -85,7 +85,7 @@ def inicializar_jogo():
 def main():
     """Função principal do jogo que controla o loop do jogo e a interação com o usuário."""
     tela = inicializar_jogo()
-    background_image = pygame.image.load("background_glass.png")  # Carrega a imagem de fundo
+    background_image = pygame.image.load("world.png")  # Carrega a imagem de fundo
     player = Player()  # Cria uma instância do jogador
     bloco_amarelo = BlocoAmarelo()  # Cria uma instância do bloco amarelo
     inimigo = Inimigo()  # Cria uma instância do inimigo
