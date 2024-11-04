@@ -94,6 +94,7 @@ class HUD:
             text_surface = font.render(name, True, WHITE)
             self.__screen.blit(text_surface, (10 + bar_width + 10, bar_y))
         self.draw_player_name(camera)
+        self.draw_mira()
     def draw_player_name(self, camera):
         """Desenha o nome do jogador acima do sprite, considerando a posição da câmera."""
         name_surface = self.__font.render(self.__player.nick, True, (255, 255, 255)) 
@@ -101,6 +102,13 @@ class HUD:
         name_x = (self.__player.rect.centerx - camera.x) - name_surface.get_width() // 2  
         name_y = (self.__player.rect.top - camera.y) - name_surface.get_height() - 5
         self.__screen.blit(name_surface, (name_x, name_y))
+        
+    def draw_mira(self):
+        mauseXY = pygame.mouse.get_pos()  
+        pygame.mouse.set_visible(False)
+        sprite = pygame.image.load("assets/MIRA-removebg-preview.png")
+        sprite = pygame.transform.scale(sprite, (20,20))
+        self.__screen.blit(sprite, mauseXY)
 
         
 

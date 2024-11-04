@@ -19,9 +19,7 @@ player = Player(
     position=(500, 500),
     size=(70, 100)
 )
-coelho = Mob(
-    player= player
-)
+
 arvore = Carvalho(
     position=(randint(100, 1000), randint(100, 1000))
 )
@@ -33,7 +31,7 @@ hud = HUD(
 
 enti = []
 structure = []
-enti.append(coelho)
+
 enti.append(player)
 structure.append(arvore)
 
@@ -43,7 +41,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-            
+    
     Ui.screen.fill((64, 200, 208))  
 
     keys = pygame.key.get_pressed()
@@ -55,6 +53,10 @@ while running:
     Ui.draw_backgroud(
         camera=world.camera
     )
+    coelho = Mob(
+    player= player
+    )
+    enti.append(coelho)
     
     player.player_recover(
         keymouse=mouse_buttons,
@@ -73,7 +75,7 @@ while running:
         entities=enti,
         camera=world.camera
     )
-    Ui.screen.blit(pygame.image.load("night.png"),(0,0))
+
     hud.draw(world.camera)
     
     pygame.display.flip()  
