@@ -8,7 +8,6 @@ class Carvalho(Structure):
         self.fase_cursor = 0
         self.Sprites_fase = self.Lsprite(['assets/Tree3.png','assets/Tree2.png','assets/Tree1.png'])
         self.sprite = self.Sprites_fase[self.fase_cursor]
-        
         self.rise = time()
         self.new_fase = 5
         
@@ -24,8 +23,9 @@ class Carvalho(Structure):
     def Lsprite(self, imgs):
         sprites = []
         for index, img in enumerate(imgs):
+            index += 1
             img_sprite = pygame.image.load(img)
-            new_size = (66 * (index + 1), 80 * (index + 1)) 
+            new_size = (66 * index, 80 * index) 
             img_sprite = pygame.transform.scale(img_sprite, new_size)
             sprites.append(img_sprite)
         

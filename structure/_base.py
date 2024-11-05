@@ -5,6 +5,8 @@ class Structure:
         self.sprite = pygame.image.load(sprite)
         self.sprite = pygame.transform.scale(self.sprite, size)
         self.rect = self.rect = pygame.Rect(position, size)
+        self.position = position
+        self.size = size
         self.rect_height = rect_height
     def check_collision(self, entities):
         """ Verifica e resolve colisão com entidades, permitindo passagem na metade superior """

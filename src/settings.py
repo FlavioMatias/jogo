@@ -8,7 +8,7 @@ class GameSettings:
         self.world_size = (10000, 10000)
         self.title = "name"
         self.background = self.sprite = pygame.image.load("assets/background.png")
-        self.fps = 60
+        self.fps = 120
         self.fullscreen = True
         
     def create_screen(self):

@@ -59,6 +59,7 @@ class HUD:
         self.__screen = screen
         self.__player = player
         self.__font = pygame.font.Font("assets/font/PressStart2P.ttf", font_size)  
+        self.cursor = Cursor(self.__screen)
 
     def draw(self, camera):
         player_info = [
@@ -96,8 +97,8 @@ class HUD:
             text_surface = font.render(name, True, WHITE)
             self.__screen.blit(text_surface, (10 + bar_width + 10, bar_y))
         self.draw_player_name(camera)
-        self.draw_mira()
         self.draw_hotbar(camera)
+        self.cursor.draw_mira()
         
     def draw_player_name(self, camera):
         """Desenha o nome do jogador acima do sprite, considerando a posição da câmera."""
@@ -107,13 +108,7 @@ class HUD:
         name_y = (self.__player.rect.top - camera.y) - name_surface.get_height() - 5
         self.__screen.blit(name_surface, (name_x, name_y))
         
-    def draw_mira(self):
-        mauseXY = pygame.mouse.get_pos()  
-        pygame.mouse.set_visible(False)
-        sprite = pygame.image.load("assets/MIRA-removebg-preview.png")
-        
-        sprite = pygame.transform.scale(sprite, (30,30))
-        self.__screen.blit(sprite, mauseXY)
+
         
     def draw_hotbar(self, camera):
         sprite = pygame.image.load("assets/hotbar.png")
@@ -123,3 +118,13 @@ class HUD:
         
         
 
+class Cursor:
+    def __init__(self, screen):
+        self.sprite = pygame.image.load("assets/MIRA-removebg-preview.png")
+        self.sprite = pygame.transform.scale(self.sprite, (30,30))
+        self.screen = screen
+
+    def draw_mira(self):
+        mauseXY = pygame.mouse.get_pos()  
+        pygame.mouse.set_visible(False)
+        self.screen.blit(self.sprite, mauseXY)
