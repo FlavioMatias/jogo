@@ -3,16 +3,17 @@ from src.settings import Settings
 
 class UI:
     def __init__(self):
-        self.screen = self.__game_init()
+        self.__game_init()
+        self.screen = Settings.create_screen()
         self.font = pygame.font.Font(None, 24)
+        
 
 
     def __game_init(self):
         """Inicializa o Pygame e configura a tela do jogo."""
         pygame.init()
-        tela = pygame.display.set_mode((Settings.screen_width, Settings.screen_height))  # Cria a tela do jogo
-        pygame.display.set_caption("Player na Tela")  # Define o título da janela
-        return tela
+        pygame.display.set_caption(Settings.title) 
+        
     
     def __move_entities(self, entities, player):
         for mobs in entities:
@@ -48,10 +49,11 @@ class UI:
     def __colision_check(self, structures, entities):
         for elements in structures:
             elements.check_collision(entities)
-                
             
-            
-            
+    def change_screen(self):
+        Settings.toggle_fullscreen(self.screen)
+        
+                          
 class HUD:
     def __init__(self, screen, player: object, font_size=15):
         self.__screen = screen
@@ -95,6 +97,8 @@ class HUD:
             self.__screen.blit(text_surface, (10 + bar_width + 10, bar_y))
         self.draw_player_name(camera)
         self.draw_mira()
+        self.draw_hotbar(camera)
+        
     def draw_player_name(self, camera):
         """Desenha o nome do jogador acima do sprite, considerando a posição da câmera."""
         name_surface = self.__font.render(self.__player.nick, True, (255, 255, 255)) 
@@ -107,8 +111,15 @@ class HUD:
         mauseXY = pygame.mouse.get_pos()  
         pygame.mouse.set_visible(False)
         sprite = pygame.image.load("assets/MIRA-removebg-preview.png")
-        sprite = pygame.transform.scale(sprite, (20,20))
+        
+        sprite = pygame.transform.scale(sprite, (30,30))
         self.__screen.blit(sprite, mauseXY)
-
+        
+    def draw_hotbar(self, camera):
+        sprite = pygame.image.load("assets/hotbar.png")
+        posx = (self.__player.rect.centerx - camera.x) - sprite.get_width() // 2
+        posy = self.__screen.get_height() - sprite.get_height() - 25
+        self.__screen.blit(sprite, (posx,posy))
+        
         
 

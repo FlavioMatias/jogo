@@ -31,6 +31,11 @@ hud = HUD(
 
 enti = []
 structure = []
+coelho = Mob(
+player= player
+)
+enti.append(coelho)
+
 
 enti.append(player)
 structure.append(arvore)
@@ -41,6 +46,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_F11:
+                Ui.change_screen()
     
     Ui.screen.fill((64, 200, 208))  
 
@@ -49,20 +57,15 @@ while running:
     
     player.atack(mouse_buttons)
     player.move(keys, world.camera)
-
+    arvore.grow()
+    
     Ui.draw_backgroud(
         camera=world.camera
     )
-    coelho = Mob(
-    player= player
-    )
-    enti.append(coelho)
-    
     player.player_recover(
         keymouse=mouse_buttons,
         key=keys
         )
-    
     
     Ui.update_entities(
         entities=enti,
