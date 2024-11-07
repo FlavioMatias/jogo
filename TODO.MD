@@ -7,4 +7,10 @@
 - [ ] player ter pet
 - [ ] player consumir item
 - [ ] player equipa item
-- [ ] player
+
+## inimigo
+
+## animals
+
+## arvores
+- [ ] ajustar o rect
