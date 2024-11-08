@@ -38,14 +38,29 @@ class UI:
         for entity in entities:
             self.__draw_entity(entity, camera)
             
-    def update_structures(self, structures : list, entities : list, camera):
+    def update_structures(self, structures: list, entities: list, camera):
         """Desenha o fundo e todas as entidades do jogo na tela, considerando a posição da câmera."""
         
         self.__colision_check(structures, entities)
         
-        for entity in structures:
+        # Ordena as estruturas pelo valor de rect.bottom para garantir que as entidades mais baixas fiquem na frente
+        sorted_structures = sorted(structures, key=lambda entity: entity.rect.bottom)
+        
+        for structure in structures:
+            structure.grow()
+        
+        # Desenha as entidades na tela com a posição ajustada pela câmera
+        for entity in sorted_structures:
             self.screen.blit(entity.sprite, (entity.rect.x - camera.x, entity.rect.y - camera.y))
             
+            # Para depuração, desenhe o retângulo de colisão
+            pygame.draw.rect(self.screen, (255, 0, 0), 
+                            (entity.collision_rect.x - camera.x, 
+                            entity.collision_rect.y - camera.y, 
+                            entity.collision_rect.width, 
+                            entity.collision_rect.height))
+
+
     def __colision_check(self, structures, entities):
         for elements in structures:
             elements.check_collision(entities)

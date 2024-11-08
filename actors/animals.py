@@ -38,6 +38,10 @@ class Mob:
                     self.rect.y -= self.Spd + 10 # Move para cima
                 else:
                     self.rect.y += self.Spd + 10 # Move para baixo
+                    
+        if distancia == 0:
+            self.alive = False
+            
         else:
             self.movimento_aleatorio()
 

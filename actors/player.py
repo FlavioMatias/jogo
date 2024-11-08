@@ -50,26 +50,29 @@ class Player(Entity):
             self.__spliter(teclas)
             move = False
             
-            if teclas[pygame.K_a] and self.rect.left > 5:
+            if teclas[pygame.K_a]:
                 self.rect.x -= self.Spd
                 self.last_direction = "left"
                 self.sprite = self.race.sprite_left[self.frame % 4]
                 move = True
-            if teclas[pygame.K_d] and self.rect.right < 10000:  
+            if teclas[pygame.K_d]:  
                 self.rect.x += self.Spd
                 self.last_direction = "right"
                 self.sprite = self.race.sprite_right[self.frame % 4]
                 move = True
-            if teclas[pygame.K_w] and self.rect.top > 5:
+            if teclas[pygame.K_w] :
                 self.rect.y -= self.Spd
                 self.last_direction = "up"
                 self.sprite = self.race.sprite_up[self.frame % 4]
                 move = True
-            if teclas[pygame.K_s] and self.rect.bottom < 10000:  
+            if teclas[pygame.K_s]:  
                 self.rect.y += self.Spd
                 self.last_direction = "down"
                 self.sprite = self.race.sprite_down[self.frame % 4]
                 move = True
+                
+            if teclas[pygame.K_s] and teclas[pygame.K_w] and not(teclas[pygame.K_d] or  teclas[pygame.K_a]) or teclas[pygame.K_d] and  teclas[pygame.K_a] and not(teclas[pygame.K_s] or teclas[pygame.K_w]):
+                self.sprite = self.race.sprite_down[0]
                 
             if move:
                 if time() - self.last_frame > self.animation_spd:
@@ -89,12 +92,22 @@ class Player(Entity):
                         self.sprite = self.race.sprite_right[0]
 
             self.sprite = pygame.transform.scale(self.sprite, self.size)
-            camera.x = self.rect.centerx - Settings.screen_width // 2
-            camera.y = self.rect.centery - Settings.screen_height // 2
+            if Settings.fullscreen:
+                
+                camera.x = self.rect.centerx - 120 - Settings.screen_width // 2
+                camera.y = self.rect.centery - Settings.screen_height // 2
 
-            # Ajusta as coordenadas para não ultrapassar os limites do mapa
-            self.rect.x = max(0, min(self.rect.x, 10000 - self.size[0]))  # Subtrai o tamanho do jogador para evitar que ele ultrapasse
-            self.rect.y = max(0, min(self.rect.y, 10000 - self.size[1]))  # O mesmo para a coordenada y
+                # Ajusta as coordenadas para não ultrapassar os limites do mapa
+                self.rect.x = max(0, min(self.rect.x, 10000 - self.size[0]))  # Subtrai o tamanho do jogador para evitar que ele ultrapasse
+                self.rect.y = max(0, min(self.rect.y, 10000 - self.size[1]))  # O mesmo para a coordenada y
+                
+            else:
+                camera.x = self.rect.centerx - Settings.screen_width // 2
+                camera.y = self.rect.centery - Settings.screen_height // 2
+
+                # Ajusta as coordenadas para não ultrapassar os limites do mapa
+                self.rect.x = max(0, min(self.rect.x, 10000 - self.size[0]))  # Subtrai o tamanho do jogador para evitar que ele ultrapasse
+                self.rect.y = max(0, min(self.rect.y, 10000 - self.size[1]))  # O mesmo para a coordenada y
 
         def __spliter(self, key):
             if key[pygame.K_LSHIFT] and self.STM > 1 and (key[pygame.K_s] or key[pygame.K_w] or key[pygame.K_a] or key[pygame.K_d]):

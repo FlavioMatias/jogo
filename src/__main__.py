@@ -6,31 +6,28 @@ import pygame
 from UI.UI import *
 from actors.player import Player
 from actors.animals import Mob
-from .game import World
+from .game import World, gerate_carvalho, day_cicle
 from random import randint
 from structure.vegetation import Carvalho
 
 world = World()
 Ui = UI()
+enti = []
+structure = []
 
 player = Player(
-    name="Flavio",
+    name="Player",
     sprite='assets/player.png',
-    position=(500, 500),
+    position=(700, 500),
     size=(70, 100)
 )
 
-arvore = Carvalho(
-    position=(randint(100, 1000), randint(100, 1000))
-)
 hud = HUD(
     screen= Ui.screen,
     player= player
 )
 
 
-enti = []
-structure = []
 coelho = Mob(
 player= player
 )
@@ -38,7 +35,6 @@ enti.append(coelho)
 
 
 enti.append(player)
-structure.append(arvore)
 
 running = True
 
@@ -50,14 +46,14 @@ while running:
             if event.key == pygame.K_F11:
                 Ui.change_screen()
     
-    Ui.screen.fill((64, 200, 208))  
+    Ui.screen.fill((64, 200, 228))  
 
     keys = pygame.key.get_pressed()
     mouse_buttons = pygame.mouse.get_pressed()
     
     player.atack(mouse_buttons)
     player.move(keys, world.camera)
-    arvore.grow()
+    
     
     Ui.draw_backgroud(
         camera=world.camera
@@ -78,7 +74,7 @@ while running:
         entities=enti,
         camera=world.camera
     )
-
+    day_cicle(Ui.screen)
     hud.draw(world.camera)
     
     pygame.display.flip()  

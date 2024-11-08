@@ -1,46 +1,42 @@
 import pygame
 
 class Structure:
-    def __init__(self,sprite : str, size : tuple, position : tuple, rect_height : int = 1):
+    def __init__(self, sprite: str, size: tuple, position: tuple, rect_height: int = 1):
+        # Carrega o sprite e redimensiona para o tamanho desejado
         self.sprite = pygame.image.load(sprite)
         self.sprite = pygame.transform.scale(self.sprite, size)
-        self.rect = self.rect = pygame.Rect(position, size)
+
+        # Define `self.rect` baseado no `sprite` redimensionado
+        self.rect = self.sprite.get_rect()  
+        self.rect.topleft = position  # Define a posição inicial
+        
+        # Guarda as propriedades iniciais
         self.position = position
         self.size = size
         self.rect_height = rect_height
+
     def check_collision(self, entities):
         """ Verifica e resolve colisão com entidades, permitindo passagem na metade superior """
-        
-        colisores = entities  # Lista com as entidades a serem verificadas
-        
-        # Define a "área de colisão" apenas na metade inferior de `self`
-        collision_rect = self.rect.copy()
-        collision_rect.height //= self.rect_height  
+        colisores = entities
 
-        # Move `collision_rect` para a parte inferior do retângulo original
-        collision_rect.top += (self.rect_height - 1) * collision_rect.height
-        # Verifica a colisão com cada entidade na metade inferior
+        # Define a "área de colisão" apenas na metade inferior de `self`
+        collision_rect = self.collision_rect  # Use o collision_rect pequeno
         for entity in colisores:
-            if entity != self and collision_rect.colliderect(entity.rect):  # Verifica colisão na parte inferior
-                # Calcula as distâncias horizontais e verticais entre os retângulos
+            if entity != self and collision_rect.colliderect(entity.rect):  # Verifica colisão
                 dx_right = entity.rect.left - self.rect.right
                 dx_left = entity.rect.right - self.rect.left
-                dy_bottom = entity.rect.top - self.rect.bottom
+                dy_bottom = entity.rect.top * 20 - self.rect.bottom
                 dy_top = entity.rect.bottom - self.rect.top
 
-                # Verifica qual é a menor distância de colisão (horizontal ou vertical)
+                # Ajusta a distância de colisão para permitir uma resolução mais precisa
                 if abs(dx_right) < abs(dy_bottom) and abs(dx_right) < abs(dy_top):
-                    # Colisão pelo lado direito
-                    entity.rect.left = self.rect.right
+                    entity.rect.left = self.rect.right  # Empurra para a direita
                 elif abs(dx_left) < abs(dy_bottom) and abs(dx_left) < abs(dy_top):
-                    # Colisão pelo lado esquerdo
-                    entity.rect.right = self.rect.left
+                    entity.rect.right = self.rect.left  # Empurra para a esquerda
                 elif abs(dy_bottom) < abs(dx_right) and abs(dy_bottom - 20) < abs(dx_left):
-                    # Colisão por baixo
-                    entity.rect.top = self.rect.bottom
+                    entity.rect.top = self.rect.bottom  # Empurra para cima
                 elif abs(dy_top) < abs(dx_right) and abs(dy_top) < abs(dx_left):
-                    # Colisão por cima
-                    entity.rect.bottom = self.rect.top
+                    entity.rect.bottom = self.rect.top  # Empurra para baixo
 
-        # Retorna True se houver colisão na metade inferior, ou False se não houver
         return any(collision_rect.colliderect(entity.rect) for entity in colisores if entity != self)
+
