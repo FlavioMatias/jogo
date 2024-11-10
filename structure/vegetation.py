@@ -18,13 +18,13 @@ class Carvalho(Structure):
         
         # Cria um retângulo de colisão menor, agora com tamanho fixo de 10x10 pixels
         self.collision_rect = pygame.Rect(
-            self.rect.centerx - 5,  # posição x, centralizando o quadrado pequeno
-            self.rect.bottom - 10,  # posição y, mantendo próximo ao fundo da árvore
-            10, 10                   # largura e altura do retângulo de colisão
+            self.rect.centerx - 20,  # posição x, centralizando o quadrado pequeno
+            self.rect.bottom - 40,  # posição y, mantendo próximo ao fundo da árvore
+            50, 35                  # largura e altura do retângulo de colisão
         )
 
         self.rise = time()
-        self.new_fase = 30 * 60
+        self.new_fase = 30
 
     def grow(self):
         if (time() - self.rise > self.new_fase) and self.fase_cursor < len(self.Sprites_fase) - 1:
@@ -34,8 +34,7 @@ class Carvalho(Structure):
 
             # Atualiza a posição do collision_rect para acompanhar o crescimento
             self.collision_rect.midbottom = self.rect.midbottom
-            self.collision_rect.x -= 5  # Centraliza o quadrado horizontalmente
-            self.collision_rect.y -= 70  # Mantém o ajuste de altura
+
 
             self.rise = time()
 

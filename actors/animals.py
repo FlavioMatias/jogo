@@ -16,6 +16,11 @@ class Mob:
         self.direcao = random.choice(['left', 'right', 'up', 'down', 'stop'])
         self.tempo_troca_direcao = random.randint(1, 3)  
         self.ultimo_tempo = time.time()  
+        self.collision_rect = pygame.Rect(
+            self.rect.centerx - 15,  # posição x, centralizando o quadrado pequeno
+            self.rect.bottom - 40,  # posição y, mantendo próximo ao fundo da árvore
+            35, 35                  # largura e altura do retângulo de colisão
+        )
 
     def move(self):
         """O mob foge do jogador se estiver a 100 px de distância."""

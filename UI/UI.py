@@ -1,5 +1,6 @@
 import pygame
 from src.settings import Settings
+from structure.vegetation import Carvalho
 
 class UI:
     def __init__(self):
@@ -24,41 +25,56 @@ class UI:
         self.screen.blit(Settings.background, (-camera.x, -camera.y))
         
 
-    def __draw_entity(self, entity, camera):
+    def draw_entity(self, entities, structures, camera):
         """ Renderiza o sprite de uma entidade na posição atual """
-        if entity.alive:
-            self.screen.blit(entity.sprite, (entity.rect.x - camera.x, entity.rect.y - camera.y))
-            
+        
+        # Cria uma lista que combina as entidades vivas e as estruturas
+        entities_to_draw = []
+
+        for entity in entities:
+            if entity.alive:
+                entities_to_draw.append(entity)  # Adiciona as entidades vivas à lista
+
+        # Adiciona as estruturas à lista
+        entities_to_draw.extend(structures)
+
+        # Ordena todas as entidades (vivas + estruturas) com base na posição do eixo Y (do topo para baixo)
+        sorted_entities = sorted(entities_to_draw, key=lambda e: e.rect.bottom)
+
+        # Desenha todas as entidades na ordem correta
+        for e in sorted_entities:
+            self.screen.blit(e.sprite, (e.rect.x - camera.x, e.rect.y - camera.y))
+
+        if False:
+            """ alterna entre true e false para ver os colision_rect """
+            for rect in structures:
+                pygame.draw.rect(self.screen, (255, 0, 0), 
+                        (rect.collision_rect.x - camera.x, 
+                        rect.collision_rect.y - camera.y, 
+                        rect.collision_rect.width, 
+                        rect.collision_rect.height))
+            for rect in entities:
+                pygame.draw.rect(self.screen, (255, 0, 0), 
+                        (rect.collision_rect.x - camera.x, 
+                        rect.collision_rect.y - camera.y, 
+                        rect.collision_rect.width, 
+                        rect.collision_rect.height))
+
+
             
     def update_entities(self, entities : list, camera, player):
         """Desenha o fundo e todas as entidades do jogo na tela, considerando a posição da câmera."""
         
         self.__move_entities(entities, player)
-        
-        for entity in entities:
-            self.__draw_entity(entity, camera)
             
-    def update_structures(self, structures: list, entities: list, camera):
+    def update_structures(self, structures: list, entities: list):
         """Desenha o fundo e todas as entidades do jogo na tela, considerando a posição da câmera."""
         
+        # Verifica e resolve colisões
         self.__colision_check(structures, entities)
-        
-        # Ordena as estruturas pelo valor de rect.bottom para garantir que as entidades mais baixas fiquem na frente
-        sorted_structures = sorted(structures, key=lambda entity: entity.rect.bottom)
-        
         for structure in structures:
-            structure.grow()
-        
-        # Desenha as entidades na tela com a posição ajustada pela câmera
-        for entity in sorted_structures:
-            self.screen.blit(entity.sprite, (entity.rect.x - camera.x, entity.rect.y - camera.y))
-            
-            # Para depuração, desenhe o retângulo de colisão
-            pygame.draw.rect(self.screen, (255, 0, 0), 
-                            (entity.collision_rect.x - camera.x, 
-                            entity.collision_rect.y - camera.y, 
-                            entity.collision_rect.width, 
-                            entity.collision_rect.height))
+            if isinstance(structure, Carvalho):
+                    structure.grow()
 
 
     def __colision_check(self, structures, entities):

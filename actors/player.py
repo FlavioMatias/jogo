@@ -43,34 +43,47 @@ class Player(Entity):
             self.frame = 0
             self.last_frame = time()
             self.animation_spd = 0.2
-            self.last_direction = "down"                
-            
+            self.last_direction = "down"    
+
+            self.collision_rect = pygame.Rect(
+                self.rect.centerx - 15, 
+                self.rect.bottom - (self.rect.height // 2) - 10,  
+                40, 35                   # Tamanho da área de colisão
+            )            
+                
         def move(self, teclas, camera):
             """Move o jogador de acordo com as teclas pressionadas e atualiza a posição da câmera."""
             self.__spliter(teclas)
             move = False
             
-            if teclas[pygame.K_a]:
+            # Movendo para a esquerda (verifica se `lefth` é True)
+            if teclas[pygame.K_a] :
                 self.rect.x -= self.Spd
                 self.last_direction = "left"
                 self.sprite = self.race.sprite_left[self.frame % 4]
                 move = True
-            if teclas[pygame.K_d]:  
+
+            # Movendo para a direita (verifica se `righth` é True)
+            if teclas[pygame.K_d]:
                 self.rect.x += self.Spd
                 self.last_direction = "right"
                 self.sprite = self.race.sprite_right[self.frame % 4]
                 move = True
-            if teclas[pygame.K_w] :
+
+            # Movendo para cima (verifica se `uph` é True)
+            if teclas[pygame.K_w]:
                 self.rect.y -= self.Spd
                 self.last_direction = "up"
                 self.sprite = self.race.sprite_up[self.frame % 4]
                 move = True
-            if teclas[pygame.K_s]:  
+
+            # Movendo para baixo (verifica se `downh` é True)
+            if teclas[pygame.K_s] :
                 self.rect.y += self.Spd
                 self.last_direction = "down"
                 self.sprite = self.race.sprite_down[self.frame % 4]
                 move = True
-                
+
             if teclas[pygame.K_s] and teclas[pygame.K_w] and not(teclas[pygame.K_d] or  teclas[pygame.K_a]) or teclas[pygame.K_d] and  teclas[pygame.K_a] and not(teclas[pygame.K_s] or teclas[pygame.K_w]):
                 self.sprite = self.race.sprite_down[0]
                 
@@ -92,10 +105,14 @@ class Player(Entity):
                         self.sprite = self.race.sprite_right[0]
 
             self.sprite = pygame.transform.scale(self.sprite, self.size)
+            self.collision_rect.x = self.rect.centerx - 20  # Ajusta a posição X do collision_rect
+            self.collision_rect.y = self.rect.bottom - (self.rect.height // 2) + 15  
+
+            
             if Settings.fullscreen:
                 
-                camera.x = self.rect.centerx - 120 - Settings.screen_width // 2
-                camera.y = self.rect.centery - Settings.screen_height // 2
+                camera.x = self.rect.centerx - 1920 // 2
+                camera.y = self.rect.centery - 1080 // 2
 
                 # Ajusta as coordenadas para não ultrapassar os limites do mapa
                 self.rect.x = max(0, min(self.rect.x, 10000 - self.size[0]))  # Subtrai o tamanho do jogador para evitar que ele ultrapasse

@@ -16,7 +16,7 @@ enti = []
 structure = []
 
 player = Player(
-    name="Player",
+    name="desgraçado",
     sprite='assets/player.png',
     position=(700, 500),
     size=(70, 100)
@@ -37,6 +37,8 @@ enti.append(coelho)
 enti.append(player)
 
 running = True
+    
+gerate_carvalho(structure=structure)
 
 while running:
     for event in pygame.event.get():
@@ -54,7 +56,6 @@ while running:
     player.atack(mouse_buttons)
     player.move(keys, world.camera)
     
-    
     Ui.draw_backgroud(
         camera=world.camera
     )
@@ -62,7 +63,7 @@ while running:
         keymouse=mouse_buttons,
         key=keys
         )
-    
+
     Ui.update_entities(
         entities=enti,
         camera=world.camera,
@@ -72,12 +73,15 @@ while running:
     Ui.update_structures(
         structures= structure,
         entities=enti,
-        camera=world.camera
     )
+    Ui.draw_entity(
+        entities=enti,
+        structures=structure,
+        camera=world.camera
+        )
     day_cicle(Ui.screen)
     hud.draw(world.camera)
     
     pygame.display.flip()  
-    pygame.time.Clock().tick(Settings.fps)
 
 pygame.quit()

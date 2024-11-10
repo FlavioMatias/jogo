@@ -11,11 +11,18 @@ class Entity:
         self.alive = True
         self.size = size
 
+
+
         """ configuraçoes iniciais """
         self.sprite = pygame.image.load(sprite)
         self.sprite = pygame.transform.scale(self.sprite, size)
         self.rect = self.sprite.get_rect(topleft=position)  
-
+        self.collision_rect = pygame.Rect(
+            self.rect.centerx - 15,  # posição X centralizada
+            self.rect.bottom - (self.rect.height // 2),  # Começa da metade inferior da entidade
+            35, 35                   # Tamanho da área de colisão
+        )
+        
     def __str__(self):
         return f"Entidade de nível {self.Lvl} com {self.Hp} HP"
 
