@@ -76,7 +76,6 @@ class UI:
             if isinstance(structure, Carvalho):
                     structure.grow()
 
-
     def __colision_check(self, structures, entities):
         for elements in structures:
             elements.check_collision(entities)

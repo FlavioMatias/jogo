@@ -1,14 +1,16 @@
 import pygame
 from time import time
 from .settings import Settings
-from structure.vegetation import Carvalho
+from structure.vegetation import Carvalho,Flower
+        
+import math
+from random import randint
+
 class World:
     def __init__(self):
         self.camera = pygame.Rect(0, 0, Settings.screen_width, Settings.screen_height)
         self.size = None
-        
-import math
-from random import randint
+
 
 def gerate_carvalho(structure, num_arvores=500, distancia_minima=300, limite_mapa=(10000, 10000), margem=300):
     """
@@ -66,4 +68,22 @@ def day_cicle(screen):
         cursor += 1 
         hora = time()
     screen.blit(turns[cursor % 3], (0,0))
+
+
+
+def gerate_Flower(structure, num_flores=1000, distancia_minima=100, limite_mapa=(10000, 10000), margem=300):
+
+    def distancia(pos1, pos2):
+        return math.sqrt((pos1[0] - pos2[0]) ** 2 + (pos1[1] - pos2[1]) ** 2)
+
+    largura_mapa, altura_mapa = limite_mapa
+    
+    for _ in range(num_flores):
+        while True:
+            posicao = (randint(margem, largura_mapa - margem), randint(margem, altura_mapa - margem))
+            if all(distancia(posicao,flower.position) >= distancia_minima for flower in structure):
+                # Cria a árvore e adiciona à lista se a posição for válida
+                flower = Flower(position=posicao)
+                structure.append(flower)
+                break  # Sai do loop ao encontrar uma posição válida
     

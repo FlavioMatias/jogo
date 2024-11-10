@@ -6,7 +6,7 @@ import pygame
 from UI.UI import *
 from actors.player import Player
 from actors.animals import Mob
-from .game import World, gerate_carvalho, day_cicle
+from .game import World, gerate_carvalho, day_cicle, gerate_Flower
 from random import randint
 from structure.vegetation import Carvalho
 
@@ -16,8 +16,8 @@ enti = []
 structure = []
 
 player = Player(
-    name="desgraçado",
-    sprite='assets/player.png',
+    name="player name",
+    sprite='assets/_Player/Front_stop.png',
     position=(700, 500),
     size=(70, 100)
 )
@@ -39,6 +39,7 @@ enti.append(player)
 running = True
     
 gerate_carvalho(structure=structure)
+gerate_Flower(structure=structure)
 
 while running:
     for event in pygame.event.get():
